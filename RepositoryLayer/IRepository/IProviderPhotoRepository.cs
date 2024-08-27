@@ -6,7 +6,7 @@ namespace RepositoryLayer.IRepository
     {
         IEnumerable<ProviderPhoto> GetAll();
         ProviderPhoto Get(int Id);
-        void Insert(ProviderPhoto providerPhoto);
+        Task Insert(ProviderPhoto providerPhoto);
         void Update(ProviderPhoto providerPhoto);
         void Delete(ProviderPhoto providerPhoto);
         void Remove(ProviderPhoto providerPhoto);

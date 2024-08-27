@@ -16,11 +16,11 @@ namespace BootcampCapstone.Controllers
         }
 
         [HttpPost(nameof(UploadProviderPhoto))]
-        public IActionResult UploadProviderPhoto(ProviderPhotoDto providerPhoto)
+        public async Task<IActionResult> UploadProviderPhoto(ProviderPhotoDto providerPhoto)
         {
             if (providerPhoto != null)
             {
-                _providerPhotoService.Insert(providerPhoto);
+                await _providerPhotoService.Insert(providerPhoto);
                 return Ok("Created Successfully");
             }
             else

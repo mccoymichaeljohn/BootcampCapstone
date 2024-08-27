@@ -33,14 +33,14 @@ namespace RepositoryLayer.Repository
         {
             return providerPhotos.AsEnumerable();
         }
-        public void Insert(ProviderPhoto photo)
+        public async Task Insert(ProviderPhoto photo)
         {
             if (photo == null)
             {
                 throw new ArgumentNullException("photo");
             }
             providerPhotos.Add(photo);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
         public void Remove(ProviderPhoto photo)
         {

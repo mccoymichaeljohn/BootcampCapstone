@@ -19,14 +19,14 @@ namespace ServiceLayer.Services
         {
             var containerClient = new BlobContainerClient(connectionString, containerName);
             var uniqueName = Guid.NewGuid().ToString();
-            var blobClient = containerClient.GetBlobClient(uniqueName);
+            var blobClient = containerClient.GetBlobClient(providerPhoto.File.FileName);
             var stream = providerPhoto.File.OpenReadStream();
-            await blobClient.UploadAsync(stream, true);
+            await blobClient.UploadAsync(stream);
 
-            _providerPhotoRepository.Insert(new ProviderPhoto()
+            await _providerPhotoRepository.Insert(new ProviderPhoto()
             {
                 BlobName = uniqueName,
-                FileName = providerPhoto.FileName,
+                FileName = providerPhoto.File.FileName,
                 CreatedDate = DateTime.Now,
                 UploadedByUserName = providerPhoto.UploadedByUserName,
                 UploadedIp = providerPhoto.UploadedIp
