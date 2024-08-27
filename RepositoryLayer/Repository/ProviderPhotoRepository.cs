@@ -4,7 +4,8 @@ using RepositoryLayer.Data;
 using RepositoryLayer.IRepository;
 namespace RepositoryLayer.Repository
 {
-    public class ProviderPhotoRepository : IProviderPhotoRepository { 
+    public class ProviderPhotoRepository : IProviderPhotoRepository
+    {
         #region property
         private readonly ApplicationDbContext _applicationDbContext;
         private DbSet<ProviderPhoto> providerPhotos;
@@ -16,14 +17,14 @@ namespace RepositoryLayer.Repository
             providerPhotos = _applicationDbContext.Set<ProviderPhoto>();
         }
         #endregion
-        public void Delete(ProviderPhoto photo)
+        public async Task Delete(ProviderPhoto photo)
         {
             if (photo == null)
             {
                 throw new ArgumentNullException("photo");
             }
             providerPhotos.Remove(photo);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
         public ProviderPhoto Get(int Id)
         {
@@ -42,7 +43,7 @@ namespace RepositoryLayer.Repository
             providerPhotos.Add(photo);
             await _applicationDbContext.SaveChangesAsync();
         }
-        public void Remove(ProviderPhoto photo)
+        public async Task Remove(ProviderPhoto photo)
         {
             if (photo == null)
             {
@@ -50,18 +51,18 @@ namespace RepositoryLayer.Repository
             }
             providerPhotos.Remove(photo);
         }
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
-        public void Update(ProviderPhoto photo)
+        public async Task Update(ProviderPhoto photo)
         {
             if (photo == null)
             {
                 throw new ArgumentNullException("photo");
             }
             providerPhotos.Update(photo);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
     }
 }

@@ -7,9 +7,9 @@ namespace RepositoryLayer.IRepository
         IEnumerable<ProviderPhoto> GetAll();
         ProviderPhoto Get(int Id);
         Task Insert(ProviderPhoto providerPhoto);
-        void Update(ProviderPhoto providerPhoto);
-        void Delete(ProviderPhoto providerPhoto);
-        void Remove(ProviderPhoto providerPhoto);
-        void SaveChanges();
+        Task Update(ProviderPhoto providerPhoto);
+        Task Delete(ProviderPhoto providerPhoto);
+        Task Remove(ProviderPhoto providerPhoto);
+        Task SaveChanges();
     }
 }
