@@ -26,13 +26,13 @@ namespace RepositoryLayer.Repository
             providerPhotos.Remove(photo);
             await _applicationDbContext.SaveChangesAsync();
         }
-        public ProviderPhoto Get(int Id)
+        public async Task<ProviderPhoto> Get(int Id)
         {
-            return providerPhotos.SingleOrDefault(c => c.Id == Id);
+            return await providerPhotos.SingleOrDefaultAsync(c => c.Id == Id);
         }
-        public IEnumerable<ProviderPhoto> GetAll()
+        public IQueryable<ProviderPhoto> GetAll()
         {
-            return providerPhotos.AsEnumerable();
+            return providerPhotos.AsQueryable();
         }
         public async Task Insert(ProviderPhoto photo)
         {

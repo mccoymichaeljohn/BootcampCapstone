@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DomainLayer.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Dtos;
 using ServiceLayer.Interfaces;
@@ -27,6 +28,41 @@ namespace BootcampCapstone.Controllers
             {
                 return BadRequest("Somethingwent wrong");
             }
+        }
+
+        [HttpGet(nameof(DownloadProviderPhoto))]
+        public async Task<IActionResult> DownloadProviderPhoto(int id)
+        {
+            var photoFile = await _providerPhotoService.DownloadPhoto(id);
+            if (photoFile == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(photoFile);
+            }
+        }
+
+        [HttpGet(nameof(GetProviderPhoto))]
+        public async Task<IActionResult> GetProviderPhoto(int id)
+        {
+            ProviderPhotoResponse? photo = await _providerPhotoService.Get(id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(photo);
+            }
+        }
+
+        [HttpGet(nameof(GetAllPhotos))]
+        public async Task<IEnumerable<ProviderPhotoResponse>> GetAllPhotos()
+        {
+            return await _providerPhotoService.GetAll();
         }
     }
 }
