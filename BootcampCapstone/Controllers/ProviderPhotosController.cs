@@ -34,13 +34,14 @@ namespace BootcampCapstone.Controllers
         public async Task<IActionResult> DownloadProviderPhoto(int id)
         {
             var photoFile = await _providerPhotoService.DownloadPhoto(id);
+ 
             if (photoFile == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(photoFile);
+                return photoFile;
             }
         }
 

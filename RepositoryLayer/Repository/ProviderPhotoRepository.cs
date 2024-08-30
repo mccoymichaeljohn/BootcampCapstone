@@ -30,9 +30,9 @@ namespace RepositoryLayer.Repository
         {
             return await providerPhotos.SingleOrDefaultAsync(c => c.Id == Id);
         }
-        public IQueryable<ProviderPhoto> GetAll()
+        public async Task<IEnumerable<ProviderPhoto>> GetAll()
         {
-            return providerPhotos.AsQueryable();
+            return await providerPhotos.ToListAsync();
         }
         public async Task Insert(ProviderPhoto photo)
         {

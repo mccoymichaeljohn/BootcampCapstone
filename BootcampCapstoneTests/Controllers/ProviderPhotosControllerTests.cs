@@ -97,8 +97,7 @@ namespace BootcampCapstoneTests.Controllers
             var result = await controller.DownloadProviderPhoto(1);
 
             // Assert
-            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(result);
-            FileContentResult model = Assert.IsType<FileContentResult>(okObjectResult.Value);
+            FileContentResult model = Assert.IsType<FileContentResult>(result);
             Assert.Equal(file, model);
             _mockService.Verify(s => s.DownloadPhoto(1), Times.Once());
         }

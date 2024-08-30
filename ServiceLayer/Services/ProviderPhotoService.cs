@@ -4,6 +4,7 @@ using Azure.Storage.Blobs;
 using DomainLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.IRepository;
 using ServiceLayer.Dtos;
 using ServiceLayer.Interfaces;
@@ -12,16 +13,18 @@ namespace ServiceLayer.Services
 {
     public class ProviderPhotoService : IProviderPhotoService
     {
-        const string connectionString = "";
+        //const string connectionString = "";
         const string containerName = "containerblobcapstone";
         private readonly IProviderPhotoRepository _providerPhotoRepository;
-        public ProviderPhotoService(IProviderPhotoRepository providerPhotoRepository)
+        private readonly BlobServiceClient _blobServiceClient;
+        public ProviderPhotoService(IProviderPhotoRepository providerPhotoRepository, BlobServiceClient blobServiceClient)
         {
             _providerPhotoRepository = providerPhotoRepository;
+            _blobServiceClient = blobServiceClient;
         }
         public async Task Insert(ProviderPhotoDto providerPhoto)
         {
-            var containerClient = new BlobContainerClient(connectionString, containerName);
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
            // var uniqueName = Guid.NewGuid().ToString();
             var blobClient = containerClient.GetBlobClient(providerPhoto.File.FileName);
             var stream = providerPhoto.File.OpenReadStream();
@@ -41,7 +44,7 @@ namespace ServiceLayer.Services
         {
             var photo = await _providerPhotoRepository.Get(id);
 
-            var containerClient = new BlobContainerClient(connectionString, containerName);
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(photo.FileName);
             var blobResult = await blobClient.DownloadContentAsync();
             new FileExtensionContentTypeProvider().TryGetContentType(photo.FileName, out string? contentType);
@@ -64,7 +67,7 @@ namespace ServiceLayer.Services
 
         public async Task<IEnumerable<ProviderPhotoResponse>> GetAll()
         {
-            return _providerPhotoRepository.GetAll().Select(photo => new ProviderPhotoResponse()
+            return (await _providerPhotoRepository.GetAll()).Select(photo => new ProviderPhotoResponse()
             {
                 Id = photo.Id,
                 CreatedDate = photo.CreatedDate,
@@ -72,7 +75,7 @@ namespace ServiceLayer.Services
                 UploadedByUserName = photo.UploadedByUserName,
                 UploadedIp = photo.UploadedIp,
                 FileName = photo.FileName
-            }).ToList();
+            });
         }
     }
 }

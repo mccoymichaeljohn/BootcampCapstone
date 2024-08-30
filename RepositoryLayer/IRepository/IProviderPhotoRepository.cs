@@ -4,7 +4,7 @@ namespace RepositoryLayer.IRepository
 {
     public interface IProviderPhotoRepository
     {
-        IQueryable<ProviderPhoto> GetAll();
+        Task<IEnumerable<ProviderPhoto>> GetAll();
         Task<ProviderPhoto> Get(int Id);
         Task Insert(ProviderPhoto providerPhoto);
         Task Update(ProviderPhoto providerPhoto);
